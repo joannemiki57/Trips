@@ -33,6 +33,9 @@
     <key>NSPhotoLibraryUsageDescription</key>
     <string>Trips reads your photo library to auto-organize trips and pick the best shots. Photos stay on your device — only labels, memos, and favorites sync to your private iCloud.</string>
 
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>Trips saves your trip favorites into a Photos album so you can share them easily.</string>
+
     <key>UIApplicationSceneManifest</key>
     <dict>
         <key>UIApplicationSupportsMultipleScenes</key>
