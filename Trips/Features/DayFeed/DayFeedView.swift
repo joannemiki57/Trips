@@ -7,6 +7,7 @@ import SwiftData
 struct DayFeedView: View {
     let trip: Trip
     var loader: ThumbnailLoader
+    @Binding var scrollToDayId: UUID?
 
     @Environment(\.modelContext) private var context
 
@@ -20,25 +21,37 @@ struct DayFeedView: View {
     ]
 
     var body: some View {
-        ScrollView {
-            LazyVStack(alignment: .leading, spacing: TripsSpacing.l, pinnedViews: [.sectionHeaders]) {
-                if !labelsInTrip.isEmpty {
-                    filterBar
-                }
-                ForEach(sortedDays) { day in
-                    Section {
-                        gridFor(day: day)
-                    } header: {
-                        header(for: day)
+        ScrollViewReader { proxy in
+            ScrollView {
+                LazyVStack(alignment: .leading, spacing: TripsSpacing.l, pinnedViews: [.sectionHeaders]) {
+                    if !labelsInTrip.isEmpty {
+                        filterBar
+                    }
+                    ForEach(sortedDays) { day in
+                        Section {
+                            gridFor(day: day)
+                        } header: {
+                            header(for: day)
+                                .id(day.id)
+                        }
                     }
                 }
+                .padding(.horizontal, TripsSpacing.l)
+                .padding(.bottom, TripsSpacing.xl)
             }
-            .padding(.horizontal, TripsSpacing.l)
-            .padding(.bottom, TripsSpacing.xl)
+            .background(TripsColor.bg)
+            .navigationTitle(trip.name)
+            .navigationBarTitleDisplayMode(.inline)
+            .task(id: scrollToDayId) {
+                guard let id = scrollToDayId else { return }
+                // LazyVStack이 해당 Section을 레이아웃할 시간 확보
+                try? await Task.sleep(for: .milliseconds(50))
+                withAnimation(TripsMotion.transition) {
+                    proxy.scrollTo(id, anchor: .top)
+                }
+                scrollToDayId = nil
+            }
         }
-        .background(TripsColor.bg)
-        .navigationTitle(trip.name)
-        .navigationBarTitleDisplayMode(.inline)
     }
 
     /// 이 Trip 안에서 실제로 쓰이는 라벨만 (전역 라벨 풀에서 필터). 한 번도 안 붙은 라벨은 안 보여줌.
