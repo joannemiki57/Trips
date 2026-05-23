@@ -8,6 +8,7 @@ struct TripDetailView: View {
 
     @State private var mode: ViewMode = .spine
     @State private var pendingScrollDayId: UUID?
+    @State private var isExportSheetPresented = false
 
     enum ViewMode: String, CaseIterable, Identifiable {
         case spine, feed
@@ -31,6 +32,22 @@ struct TripDetailView: View {
         .background(TripsColor.bg)
         .navigationTitle(trip.name)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    isExportSheetPresented = true
+                } label: {
+                    Image(systemName: "square.and.arrow.up")
+                }
+                .accessibilityLabel(String(localized: "export.openSheet"))
+            }
+        }
+        .sheet(isPresented: $isExportSheetPresented) {
+            ExportSheet(
+                trip: trip,
+                imageDataProvider: PhotoKitImageDataProvider()
+            )
+        }
     }
 
     private func jumpToFeed(_ day: Day) {
