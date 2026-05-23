@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Trips — Export 트리거 위치 시안</title>
+<style>
+  :root {
+    --bg: #FFFFFF;
+    --surface: #FAFAFA;
+    --text-primary: #000000;
+    --text-secondary: #737373;
+    --border: #DBDBDB;
+    --accent: #FF3040;
+    --success: #34C759;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    background: #2C2C2E;
+    color: #fff;
+    padding: 32px 24px;
+    min-height: 100vh;
+  }
+  h1 {
+    font-family: "SF Pro Rounded", -apple-system, sans-serif;
+    font-size: 28px;
+    font-weight: 900;
+    margin-bottom: 6px;
+    letter-spacing: -0.6px;
+  }
+  h1 .dot { color: var(--accent); }
+  .sub {
+    color: #A8A8A8;
+    font-size: 14px;
+    margin-bottom: 32px;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    max-width: 1280px;
+  }
+  .card {
+    background: #1C1C1E;
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid #2C2C2E;
+  }
+  .card-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .badge {
+    background: var(--accent);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 6px;
+    letter-spacing: 0.4px;
+  }
+  .card h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .card .desc {
+    font-size: 12px;
+    color: #A8A8A8;
+    margin-bottom: 16px;
+    line-height: 1.5;
+    min-height: 50px;
+  }
+  .phone {
+    background: var(--bg);
+    color: var(--text-primary);
+    border-radius: 32px;
+    overflow: hidden;
+    border: 8px solid #000;
+    aspect-ratio: 9 / 19.5;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  }
+  .statusbar {
+    height: 28px;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 18px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .navbar {
+    height: 44px;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .navbar-left { display: flex; align-items: center; gap: 4px; color: var(--accent); }
+  .navbar-right { display: flex; align-items: center; gap: 14px; color: var(--text-primary); font-size: 16px; }
+  .navbar-title { font-weight: 700; color: var(--text-primary); font-size: 14px; }
+  .highlight { color: var(--accent) !important; position: relative; }
+  .highlight::after {
+    content: '';
+    position: absolute;
+    inset: -6px -6px;
+    border: 2px dashed var(--accent);
+    border-radius: 8px;
+    animation: pulse 1.5s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+  .picker {
+    display: flex;
+    margin: 10px 14px;
+    background: #EBEBED;
+    border-radius: 9px;
+    padding: 2px;
+  }
+  .picker > div {
+    flex: 1;
+    text-align: center;
+    padding: 6px 0;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    border-radius: 7px;
+  }
+  .picker > div.active {
+    background: #fff;
+    color: var(--text-primary);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  }
+  .body {
+    flex: 1;
+    padding: 12px 16px;
+    background: var(--bg);
+    overflow: hidden;
+    position: relative;
+  }
+  .spine-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 18px;
+    align-items: flex-start;
+  }
+  .spine-col {
+    width: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .node {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    margin: 6px 0;
+  }
+  .node.small { width: 8px; height: 8px; background: var(--border); }
+  .node.big { width: 14px; height: 14px; }
+  .line {
+    width: 2px;
+    background: var(--border);
+    flex: 1;
+    min-height: 18px;
+  }
+  .spine-content {
+    flex: 1;
+    padding-top: 2px;
+  }
+  .spine-date {
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .spine-date .chev { font-size: 10px; color: var(--text-secondary); }
+  .spine-photos {
+    display: flex;
+    gap: 4px;
+  }
+  .spine-photo {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, #FFD89B 0%, #19547B 100%);
+    border-radius: 4px;
+  }
+  .spine-photo:nth-child(2) { background: linear-gradient(135deg, #FF9A8B 0%, #FF6A88 100%); }
+  .spine-photo:nth-child(3) { background: linear-gradient(135deg, #A1FFCE 0%, #FAFFD1 100%); }
+  .untidy {
+    font-size: 10px;
+    color: var(--text-secondary);
+  }
+  .cta-area {
+    padding: 16px;
+    border-top: 1px solid var(--border);
+  }
+  .cta {
+    width: 100%;
+    background: var(--accent);
+    color: #fff;
+    padding: 12px;
+    border-radius: 12px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .tabbar {
+    height: 56px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding-bottom: 12px;
+  }
+  .tab {
+    text-align: center;
+    font-size: 9px;
+    color: var(--text-secondary);
+  }
+  .tab.active { color: var(--accent); }
+  .tab .ic { font-size: 18px; display: block; margin-bottom: 2px; }
+  .settings-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .settings-row .ic { font-size: 16px; margin-right: 10px; }
+  .legend {
+    margin-top: 24px;
+    font-size: 13px;
+    color: #A8A8A8;
+    max-width: 900px;
+  }
+  .legend strong { color: #fff; }
+</style>
+</head>
+<body>
+
+<h1>Trips<span class="dot">.</span> Export 트리거 위치 시안</h1>
+<div class="sub">3개 옵션 — 빨간 점선 박스가 탭 타겟. mvp.md §5.5 (PDF + 카메라롤)</div>
+
+<div class="row">
+
+  <!-- ===== Option A: TripDetailView toolbar share icon ===== -->
+  <div class="card">
+    <div class="card-head"><span class="badge">A · 추천</span><h2>TripDetail 상단 공유 아이콘</h2></div>
+    <div class="desc">Trip 열어서 자연스럽게 올라가는 언더. iOS 표준 share sheet → PDF / 카메라롤 / 인스타 등 동시 제공.</div>
+    <div class="phone">
+      <div class="statusbar"><span>9:41</span><span>● ● ●</span></div>
+      <div class="navbar">
+        <div class="navbar-left">‹ Trips</div>
+        <div class="navbar-title">Toronto Trip</div>
+        <div class="navbar-right"><span class="highlight">⇪</span></div>
+      </div>
+      <div class="picker">
+        <div class="active">Spine</div>
+        <div>Feed</div>
+      </div>
+      <div class="body">
+        <div class="spine-row">
+          <div class="spine-col"><div class="node big"></div><div class="line"></div></div>
+          <div class="spine-content">
+            <div class="spine-date">Mon, May 12 <span class="chev">›</span></div>
+            <div class="spine-photos"><div class="spine-photo"></div><div class="spine-photo"></div><div class="spine-photo"></div></div>
+          </div>
+        </div>
+        <div class="spine-row">
+          <div class="spine-col"><div class="node"></div><div class="line"></div></div>
+          <div class="spine-content">
+            <div class="spine-date">Tue, May 13 <span class="chev">›</span></div>
+            <div class="spine-photos"><div class="spine-photo"></div><div class="spine-photo"></div></div>
+          </div>
+        </div>
+        <div class="spine-row">
+          <div class="spine-col"><div class="node small"></div><div class="line"></div></div>
+          <div class="spine-content">
+            <div class="spine-date" style="color:var(--text-secondary)">Wed, May 14 <span class="chev">›</span></div>
+            <div class="untidy">⌧ Untidy · 18 photos</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Option B: Spine bottom CTA button ===== -->
+  <div class="card">
+    <div class="card-head"><span class="badge">B</span><h2>Spine 하단 전용 CTA</h2></div>
+    <div class="desc">Spine 맨 아래 큰 빨간 버튼. "이 여행 저장" 같은 명확한 목적 액션. 발견 쉬움 ↑ 상시 노출.</div>
+    <div class="phone">
+      <div class="statusbar"><span>9:41</span><span>● ● ●</span></div>
+      <div class="navbar">
+        <div class="navbar-left">‹ Trips</div>
+        <div class="navbar-title">Toronto Trip</div>
+        <div class="navbar-right">⋯</div>
+      </div>
+      <div class="picker">
+        <div class="active">Spine</div>
+        <div>Feed</div>
+      </div>
+      <div class="body">
+        <div class="spine-row">
+          <div class="spine-col"><div class="node big"></div><div class="line"></div></div>
+          <div class="spine-content">
+            <div class="spine-date">Mon, May 12 <span class="chev">›</span></div>
+            <div class="spine-photos"><div class="spine-photo"></div><div class="spine-photo"></div></div>
+          </div>
+        </div>
+        <div class="spine-row">
+          <div class="spine-col"><div class="node"></div><div class="line"></div></div>
+          <div class="spine-content">
+            <div class="spine-date">Tue, May 13 <span class="chev">›</span></div>
+            <div class="spine-photos"><div class="spine-photo"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="cta-area">
+        <div class="cta highlight">⇪ &nbsp;Save this trip</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Option C: Settings tab Export menu ===== -->
+  <div class="card">
+    <div class="card-head"><span class="badge">C</span><h2>Settings 탭 Export 메뉴</h2></div>
+    <div class="desc">Settings에서 "Export" 메뉴 → trip 선택. 자주 안 쓰는 흐름이라 발견 어려움. 가장 약함.</div>
+    <div class="phone">
+      <div class="statusbar"><span>9:41</span><span>● ● ●</span></div>
+      <div class="navbar">
+        <div class="navbar-left"></div>
+        <div class="navbar-title">Settings</div>
+        <div class="navbar-right"></div>
+      </div>
+      <div class="body">
+        <div class="settings-row"><span><span class="ic">📷</span>Photo Access</span><span style="color:var(--text-secondary)">Full ›</span></div>
+        <div class="settings-row"><span><span class="ic">🏠</span>Home Anchor</span><span style="color:var(--text-secondary)">Set ›</span></div>
+        <div class="settings-row highlight"><span><span class="ic">⇪</span>Export</span><span style="color:var(--text-secondary)">›</span></div>
+        <div class="settings-row"><span><span class="ic">💳</span>Pro Plan</span><span style="color:var(--text-secondary)">Free ›</span></div>
+      </div>
+      <div class="tabbar">
+        <div class="tab"><span class="ic">▣</span>Trips</div>
+        <div class="tab active"><span class="ic">⚙</span>Settings</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="legend">
+  <p><strong>공통 동작</strong>: 탭 → iOS 표준 share sheet 띄움 → PDF 미리보기 / Save to Photos / AirDrop / 인스타·메시지 등.</p>
+  <p style="margin-top:8px"><strong>이번 슬라이스 export 스코프</strong>: favorite (♥)만, Day 한 페이지 레이아웃.</p>
+</div>
+
+</body>
+</html>
