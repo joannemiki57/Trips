@@ -65,3 +65,4 @@
 /* Visual Spine — 정리 안 된 Day 안내 */
 "spine.unset %lld" = "정리 안 됨 · 사진 %lld장";
 "spine.favoriteCount %lld" = "좋아요 %lld장";
+"spine.jumpToDay" = "피드에서 이 Day 보기";

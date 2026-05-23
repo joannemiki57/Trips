@@ -65,3 +65,4 @@
 /* Visual Spine — untidy day note */
 "spine.unset %lld" = "Untidy · %lld photos";
 "spine.favoriteCount %lld" = "%lld favorites";
+"spine.jumpToDay" = "Jump to day in feed";
