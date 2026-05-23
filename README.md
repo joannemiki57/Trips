@@ -1,83 +1,66 @@
-# Trips (가칭)
+# Trips
 
-> 여행이 끝난 후, 카메라롤만으로 자동 정리되는 **여행 단위 사진 큐레이션 · 스토리북 앱** (iOS Native)
+> An iOS native SwiftUI app that auto-organizes a photo curation and storybook from the camera roll after a trip ends.
 >
-> **약속**: *"자동으로 1차 완성, 마음에 들면 직접 다듬기."*
+> **Promise**: *"Auto-completed first pass; refine by hand if you like it."*
 
----
+## Highlights
 
-## 한눈에 보기
+- **Primary target**: travelers in their 20s and 30s who create Instagram content
+- **Secondary target**: anyone who wants to record and curate trip photos with mood and feel
+- **What sets it apart**:
+  - The algorithmic rigor of a storage-cleanup app combined with the mood and monetization of a travel-journal app
+  - **Post-trip automation** (no in-trip logging required)
+  - **Photo originals stay on device**; only labels, memos, and favorites sync via CloudKit
+- **Business model**: Freemium subscription (basic flow plus PDF and camera-roll export are free; Pro is subscription)
+- **Launch target**: 3 to 4 months (solo developer)
 
-- **1차 타겟**: 인스타 콘텐츠를 만드는 20–30대 여행자
-- **확장 타겟**: 여행 사진을 감성적으로 기록·큐레이션하고 싶은 광범위 여행자
-- **차별점**:
-  - 스토리지 정리 앱의 알고리즘 + 여행 저널 앱의 감성·수익 모델
-  - **사후 자동 처리** (여행 중 로깅 불필요)
-  - **사진 원본은 기기 안에**, 라벨·메모·favorite만 CloudKit 동기화
-- **수익 모델**: Freemium 구독 (기본 + PDF/카메라롤 export까지 무료, Pro는 구독)
-- **출시 목표**: 3–4개월 (1인 개발)
+## Core Features (v1.0)
 
----
+1. **Auto Trip grouping**: EXIF timestamp + GPS group photos into trips automatically
+2. **Similar-photo grouping**: Live Photo best-shot suggestion plus user-pinned favorites
+3. **Memo + manual labeling**: per-photo and per-group memos, label-based filters
+4. **Visual Spine view (default)**: the whole trip compressed into a vertical spine with per-day favorite nodes
+5. **Export**: PDF photobook + camera-roll save
 
-## 핵심 기능 (v1.0)
+Full spec: [`mvp.md`](./mvp.md).
 
-1. **Trip 자동 그루핑** — EXIF timestamp + GPS로 여행 단위 자동 묶음
-2. **중복 사진 그룹핑** — Live Photo 베스트샷 자동 추천 + 사용자 favorite 지정
-3. **메모 + 수동 라벨링** — 사진/그룹 단위 메모, 라벨 기반 필터
-4. **Visual Spine 뷰 (기본)** — 여행 전체를 세로 척추로 압축, Day별 favorite 마디
-5. **Export** — PDF 사진첩 + 카메라롤 저장
+## Tech Stack
 
-상세 명세는 [`mvp.md`](./mvp.md) 참고.
+- Swift 5.9+ / SwiftUI (iOS 18+)
+- PhotoKit, Vision, Core ML, PDFKit, CoreLocation
+- **SwiftData with CloudKit Private Database** (metadata sync)
+- Minimal external SDKs (analytics and crash reporting only)
+- Cost: Apple Developer Program $99 per year plus CloudKit free tier
 
----
+Details: [`mvp.md` §7](./mvp.md#7-기술-스택).
 
-## 문서 구성
+## Roadmap
 
-| 파일 | 내용 | 상태 |
+| Stage | Duration | Output |
 | --- | --- | --- |
-| [`mvp.md`](./mvp.md) | **단일 마스터** — 통합 MVP 기획서 | ✅ 최신 |
-| [`decisions.md`](./decisions.md) | 통합 과정에서 발생한 충돌 10건의 결정 이력 | ✅ 결정 완료 (2026-05-17) |
-| [`ideation.md`](./ideation.md) | 초기 아이디어 노트 | 📜 히스토리 (참고용) |
-| [`evaluation.md`](./evaluation.md) | 시장·경쟁 분석, 실현 가능성 평가 | 📜 히스토리 (참고용) |
-| [`visuals.md`](./visuals.md) | 초기 화면 명세 (Visual Spine 개념의 원전) | 📜 히스토리 (참고용) |
+| Phase 0: validation | 1 to 2 weeks | 5 to 10 interviews, Figma prototype |
+| Phase 1: technical PoC | 1 to 2 weeks | PhotoKit / CloudKit / similar-photo grouping |
+| Phase 2: MVP build | 6 to 8 weeks | App body |
+| Phase 3: beta | 2 to 3 weeks | TestFlight 20 to 50 users |
+| Phase 4: launch | TBD | App Store release |
 
-> `ideation.md` / `evaluation.md` / `visuals.md`의 모든 결정 사항은 `mvp.md`에 통합 반영되었습니다. 히스토리 참고용으로만 유지합니다.
+Weekly breakdown: [`mvp.md` §10](./mvp.md#10-개발-단계).
 
----
+## Documents
 
-## 개발 로드맵
+| File | Role |
+| --- | --- |
+| [`mvp.md`](./mvp.md) | Consolidated master spec |
+| [`selection.md`](./selection.md) | Pre-coding decisions, design tokens (§F), schema |
 
-| 단계 | 기간 | 산출물 |
-| --- | --- | --- |
-| Phase 0 — 검증 | 1–2주 | 인터뷰 5–10명, Figma 프로토타입 |
-| Phase 1 — 기술 PoC | 1–2주 | PhotoKit / CloudKit / 유사 사진 그루핑 |
-| Phase 2 — MVP 빌드 | 6–8주 | App 본체 |
-| Phase 3 — 베타 | 2–3주 | TestFlight 20–50명 |
-| Phase 4 — 출시 | — | App Store 출시 |
+## Status
 
-상세 주차별 작업은 [`mvp.md` §10](./mvp.md#10-개발-단계) 참고.
-
----
-
-## 기술 스택
-
-- Swift 5.9+ / SwiftUI (iOS 17+)
-- PhotoKit · Vision · Core ML · PDFKit · CoreLocation
-- **SwiftData ↔ CloudKit Private Database** (메타데이터 동기화)
-- 외부 SDK 최소화 (분석/크래시 리포트 정도)
-- 비용: Apple Developer Program **$99/년** + CloudKit 무료 할당량
-
-상세는 [`mvp.md` §7](./mvp.md#7-기술-스택) 참고.
-
----
-
-## 진행 상황
-
-- [x] 아이디어 정의 (`ideation.md`)
-- [x] 시장·경쟁 분석 (`evaluation.md`)
-- [x] 화면 명세 (`visuals.md`)
-- [x] 통합 MVP 기획서 (`mvp.md`)
-- [x] 충돌 항목 10건 결정 (`decisions.md`)
-- [ ] Phase 0 인터뷰
-- [ ] Figma 프로토타입
-- [ ] Phase 1 기술 PoC
+- [x] Idea definition
+- [x] Market and competition analysis
+- [x] Screen spec
+- [x] Consolidated MVP spec (`mvp.md`)
+- [x] Locked decisions (`selection.md`)
+- [ ] Phase 0 interviews
+- [ ] Figma prototype
+- [ ] Phase 1 technical PoC
