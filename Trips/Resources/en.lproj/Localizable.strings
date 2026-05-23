@@ -1,0 +1,67 @@
+/* Photo library permission reason. Surfaced on first ask. */
+"NSPhotoLibraryUsageDescription" = "Trips reads your photo library to auto-organize trips and pick the best shots. Photos stay on your device — only labels, memos, and favorites sync to your private iCloud.";
+
+/* App name */
+"app.name" = "Trips";
+
+/* Tab bar */
+"tab.trips" = "Trips";
+"tab.spine" = "Spine";
+"tab.settings" = "Settings";
+
+/* Empty states */
+"empty.trips.title" = "No trips yet";
+"empty.trips.body" = "Take some photos away from home and they'll appear here.";
+
+/* Permission denied */
+"permission.photos.denied.title" = "Photo access needed";
+"permission.photos.denied.body" = "Trips needs access to your photo library to organize your trips. You can grant access in Settings.";
+"permission.photos.openSettings" = "Open Settings";
+
+/* TripList — primary screen */
+"triplist.empty.title" = "No trips yet";
+"triplist.empty.body" = "Scan your photo library to find your first trip. Photos stay on your device.";
+"triplist.empty.scanButton" = "Scan Photos";
+"triplist.scanning" = "Scanning…";
+"triplist.photoCount %lld" = "%lld photos";
+"triplist.defaultName %lld" = "Trip %lld";
+"triplist.rescan" = "Rescan";
+"triplist.rename" = "Rename";
+"triplist.rename.title" = "Rename Trip";
+"triplist.rename.placeholder" = "Trip name";
+"triplist.rename.save" = "Save";
+"triplist.rename.cancel" = "Cancel";
+
+/* DayFeed — Trip detail (photos by Day) */
+"dayfeed.photoCount %lld" = "%lld photos";
+
+/* Cluster view — duplicate / similar photos */
+"cluster.title" = "Similar photos";
+"cluster.title.single" = "Photo";
+"cluster.summary %lld" = "%lld photos in this group";
+"cluster.split" = "Remove from group";
+"cluster.memo" = "Group note";
+"cluster.memo.placeholder" = "Add a note for this group…";
+
+/* Photo Detail */
+"photodetail.title" = "Photo";
+"photodetail.favorite" = "Favorite";
+"photodetail.memo" = "Memo";
+"photodetail.memo.placeholder" = "Add a note for this photo…";
+
+/* Labels — manual labeling in Photo Detail / Cluster + filter in DayFeed */
+"label.section.title" = "Labels";
+"label.add" = "Add";
+"label.remove" = "Remove";
+"label.add.title" = "Add Label";
+"label.add.placeholder" = "Label name";
+"label.add.save" = "Add";
+"label.add.cancel" = "Cancel";
+
+/* Trip Detail (Spine ↔ Feed wrapper) */
+"tripdetail.mode.spine" = "Spine";
+"tripdetail.mode.feed" = "Feed";
+
+/* Visual Spine — untidy day note */
+"spine.unset %lld" = "Untidy · %lld photos";
+"spine.favoriteCount %lld" = "%lld favorites";

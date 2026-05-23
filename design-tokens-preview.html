@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Trips — 디자인 토큰 미리보기</title>
+<style>
+  :root {
+    --bg-light: #FFFFFF;
+    --surface-light: #FAFAFA;
+    --text-primary-light: #000000;
+    --text-secondary-light: #737373;
+    --border-light: #DBDBDB;
+
+    --bg-dark: #000000;
+    --surface-dark: #1C1C1E;
+    --text-primary-dark: #FFFFFF;
+    --text-secondary-dark: #A8A8A8;
+    --border-dark: #2C2C2E;
+
+    --accent: #FF3040;
+    --success: #34C759;
+    --warning: #FF9500;
+
+    --radius: 12px;
+    --unit: 4px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    background: #2C2C2E;
+    color: #fff;
+    padding: 24px;
+    min-height: 100vh;
+  }
+
+  .brand-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .brand-mark {
+    font-family: "SF Pro Rounded", -apple-system, sans-serif;
+    font-size: 38px;
+    font-weight: 900;
+    letter-spacing: -1.2px;
+    color: #FFFFFF;
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+  }
+  .brand-mark .dot {
+    color: var(--accent);
+    margin-left: 1px;
+    font-size: 42px;
+    line-height: 1;
+    transform: translateY(-2px);
+  }
+  .brand-tag {
+    font-size: 11px;
+    color: #A8A8A8;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding-left: 10px;
+    border-left: 1px solid #555;
+    margin-left: 4px;
+  }
+
+  /* Logo variants strip */
+  .logo-variants {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+  .logo-card {
+    background: #1C1C1E;
+    border: 1px solid #2C2C2E;
+    border-radius: 12px;
+    padding: 24px 20px 14px;
+    min-width: 200px;
+    text-align: center;
+    cursor: default;
+  }
+  .logo-card.selected {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent) inset;
+  }
+  .logo-card .logo-label {
+    font-size: 11px;
+    color: #A8A8A8;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-top: 14px;
+  }
+
+  /* Variant V1 — Italic Black (★ recommended) */
+  .logo-v1 {
+    font-family: "SF Pro Display", -apple-system, sans-serif;
+    font-size: 32px;
+    font-weight: 900;
+    font-style: italic;
+    letter-spacing: -1.3px;
+    color: #FFFFFF;
+  }
+  .logo-v1 .dot { color: var(--accent); font-style: normal; }
+
+  /* Variant V2 — Rounded Black */
+  .logo-v2 {
+    font-family: "SF Pro Rounded", -apple-system, sans-serif;
+    font-size: 32px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    color: #FFFFFF;
+  }
+  .logo-v2 .dot { color: var(--accent); }
+
+  /* Variant V3 — Wide tracking uppercase */
+  .logo-v3 {
+    font-family: "SF Pro Display", -apple-system, sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: 6px;
+    color: #FFFFFF;
+    text-transform: uppercase;
+  }
+  .logo-v3 .dot { color: var(--accent); letter-spacing: 0; }
+
+  /* Variant V4 — Heart fused */
+  .logo-v4 {
+    font-family: "SF Pro Display", -apple-system, sans-serif;
+    font-size: 32px;
+    font-weight: 900;
+    letter-spacing: -1.2px;
+    color: #FFFFFF;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .logo-v4 .heart {
+    color: var(--accent);
+    font-size: 22px;
+    transform: translateY(-2px);
+  }
+
+  h1 { font-size: 28px; font-weight: 800; margin-bottom: 8px; }
+  .subtitle { font-size: 14px; color: #A8A8A8; margin-bottom: 32px; }
+
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .phone {
+    border-radius: 32px;
+    overflow: hidden;
+    box-shadow: 0 12px 60px rgba(0,0,0,0.5);
+    border: 8px solid #1C1C1E;
+  }
+
+  .phone-label {
+    text-align: center;
+    font-size: 13px;
+    color: #A8A8A8;
+    padding: 8px 0;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  /* Light mode mock */
+  .light {
+    background: var(--bg-light);
+    color: var(--text-primary-light);
+  }
+  .light .surface { background: var(--surface-light); border: 1px solid var(--border-light); }
+  .light .text-secondary { color: var(--text-secondary-light); }
+  .light .nav { background: var(--bg-light); border-bottom: 1px solid var(--border-light); }
+  .light .border { border-color: var(--border-light); }
+
+  /* Dark mode mock */
+  .dark {
+    background: var(--bg-dark);
+    color: var(--text-primary-dark);
+  }
+  .dark .surface { background: var(--surface-dark); border: 1px solid var(--border-dark); }
+  .dark .text-secondary { color: var(--text-secondary-dark); }
+  .dark .nav { background: var(--bg-dark); border-bottom: 1px solid var(--border-dark); }
+  .dark .border { border-color: var(--border-dark); }
+
+  .screen { min-height: 600px; padding: 0; }
+
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    position: sticky;
+    top: 0;
+  }
+  .nav h2 { font-family: "SF Pro Rounded", -apple-system, sans-serif; font-size: 22px; font-weight: 900; letter-spacing: -0.5px; }
+  .nav-icon { font-size: 22px; }
+
+  /* Trip card */
+  .trip-card {
+    margin: 16px 20px;
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .trip-cover {
+    height: 200px;
+    background: linear-gradient(135deg, #4A90E2 0%, #9B6BFF 50%, #FF6B9B 100%);
+    position: relative;
+  }
+  .trip-cover.osaka {
+    background: linear-gradient(135deg, #FF6B6B 0%, #FFA94D 50%, #FFD43B 100%);
+  }
+  .trip-cover.busan {
+    background: linear-gradient(135deg, #1864AB 0%, #339AF0 60%, #66D9E8 100%);
+  }
+  .trip-meta {
+    padding: 12px 16px;
+  }
+  .trip-name {
+    font-family: "SF Pro Display", sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .trip-date {
+    font-size: 14px;
+  }
+
+  /* Photo grid */
+  .grid-section {
+    padding: 0 4px;
+  }
+  .grid-section-title {
+    font-size: 14px;
+    font-weight: 600;
+    padding: 16px 16px 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+  .cell {
+    aspect-ratio: 1;
+    background: linear-gradient(45deg, #888, #ccc);
+    position: relative;
+  }
+  .cell.a { background: linear-gradient(135deg, #74C0FC, #1971C2); }
+  .cell.b { background: linear-gradient(135deg, #FFD43B, #FA5252); }
+  .cell.c { background: linear-gradient(135deg, #51CF66, #2F9E44); }
+  .cell.d { background: linear-gradient(135deg, #845EF7, #5F3DC4); }
+  .cell.e { background: linear-gradient(135deg, #FF8787, #C92A2A); }
+  .cell.f { background: linear-gradient(135deg, #4DABF7, #1864AB); }
+  .cell.heart::after {
+    content: "♥";
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    color: var(--accent);
+    font-size: 18px;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+  }
+
+  /* Token palette section */
+  .palette-section {
+    max-width: 1100px;
+    margin: 48px auto 0;
+  }
+  .palette-section h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .swatch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+  }
+  .swatch {
+    background: #1C1C1E;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #2C2C2E;
+  }
+  .swatch-color {
+    height: 80px;
+  }
+  .swatch-meta {
+    padding: 10px 12px;
+  }
+  .swatch-name { font-size: 13px; font-weight: 600; }
+  .swatch-hex { font-size: 12px; color: #A8A8A8; margin-top: 2px; font-family: "SF Mono", monospace; }
+
+  /* Typography section */
+  .type-row {
+    background: #1C1C1E;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+  }
+  .type-size { color: #737373; font-family: "SF Mono", monospace; font-size: 12px; min-width: 60px; }
+  .type-sample { flex: 1; }
+
+  /* Spacing demo */
+  .spacing-demo {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+    background: #1C1C1E;
+    padding: 20px;
+    border-radius: 12px;
+  }
+  .space-bar {
+    background: var(--accent);
+    width: 32px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    color: #fff;
+    font-size: 10px;
+    font-family: "SF Mono", monospace;
+    padding-bottom: 4px;
+  }
+
+  /* Radius demo */
+  .radius-demo {
+    display: flex;
+    gap: 16px;
+    background: #1C1C1E;
+    padding: 20px;
+    border-radius: 12px;
+  }
+  .radius-box {
+    width: 80px;
+    height: 80px;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-family: "SF Mono", monospace;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  /* iOS Tab bar */
+  .tab-bar {
+    display: flex;
+    border-top: 0.5px solid var(--border-color, #DBDBDB);
+    padding: 8px 0 24px;
+    margin-top: 16px;
+  }
+  .light .tab-bar { border-top-color: var(--border-light); background: var(--bg-light); }
+  .dark .tab-bar { border-top-color: var(--border-dark); background: var(--bg-dark); }
+  .tab {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    font-size: 10px;
+    font-weight: 600;
+    color: #8E8E93;
+  }
+  .tab-icon { font-size: 22px; line-height: 1; }
+  .tab.active { color: #000; }
+  .dark .tab.active { color: #FFF; }
+  .tab.active .tab-icon { font-weight: 900; }
+
+</style>
+</head>
+<body>
+
+<div class="brand-bar">
+  <span class="brand-mark">Trips<span class="dot">·</span></span>
+  <span class="brand-tag">Design Tokens Preview</span>
+</div>
+
+<div class="logo-variants">
+  <div class="logo-card">
+    <div class="logo-v1">Trips<span class="dot">·</span></div>
+    <div class="logo-label">V1 · Italic Black</div>
+  </div>
+  <div class="logo-card selected">
+    <div class="logo-v2">Trips<span class="dot">·</span></div>
+    <div class="logo-label">V2 · Rounded Black ★ 선택</div>
+  </div>
+  <div class="logo-card">
+    <div class="logo-v3">Trips<span class="dot">·</span></div>
+    <div class="logo-label">V3 · Wide Caps</div>
+  </div>
+  <div class="logo-card">
+    <div class="logo-v4">Trips<span class="heart">♥</span></div>
+    <div class="logo-label">V4 · Heart Fused</div>
+  </div>
+</div>
+
+<h1>디자인 토큰 미리보기</h1>
+<p class="subtitle">왼쪽 = 라이트 모드 · 오른쪽 = 다크 모드 · 핵심 화면(여행 목록) 목업</p>
+
+<div class="compare">
+  <!-- LIGHT MODE -->
+  <div>
+    <div class="phone-label">LIGHT MODE</div>
+    <div class="phone light">
+      <div class="screen">
+        <div class="nav">
+          <h2>Trips</h2>
+          <span class="nav-icon">⊕</span>
+        </div>
+
+        <div class="trip-card surface">
+          <div class="trip-cover osaka"></div>
+          <div class="trip-meta">
+            <div class="trip-name">오사카 4박 5일</div>
+            <div class="trip-date text-secondary">2026.04.12 — 04.16 · 사진 287장</div>
+          </div>
+        </div>
+
+        <div class="grid-section">
+          <div class="grid-section-title text-secondary">Day 1 · 도착</div>
+          <div class="grid">
+            <div class="cell a heart"></div>
+            <div class="cell b"></div>
+            <div class="cell c"></div>
+            <div class="cell d heart"></div>
+            <div class="cell e"></div>
+            <div class="cell f"></div>
+          </div>
+        </div>
+
+        <div style="height: 24px;"></div>
+
+        <div class="tab-bar">
+          <div class="tab active"><span class="tab-icon">▦</span><span>Trips</span></div>
+          <div class="tab"><span class="tab-icon">┃</span><span>Spine</span></div>
+          <div class="tab"><span class="tab-icon">⚙</span><span>Settings</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DARK MODE -->
+  <div>
+    <div class="phone-label">DARK MODE</div>
+    <div class="phone dark">
+      <div class="screen">
+        <div class="nav">
+          <h2>Trips</h2>
+          <span class="nav-icon">⊕</span>
+        </div>
+
+        <div class="trip-card surface">
+          <div class="trip-cover busan"></div>
+          <div class="trip-meta">
+            <div class="trip-name">부산 주말</div>
+            <div class="trip-date text-secondary">2026.05.03 — 05.04 · 사진 124장</div>
+          </div>
+        </div>
+
+        <div class="grid-section">
+          <div class="grid-section-title text-secondary">Day 1 · 해운대</div>
+          <div class="grid">
+            <div class="cell f heart"></div>
+            <div class="cell a"></div>
+            <div class="cell d"></div>
+            <div class="cell b heart"></div>
+            <div class="cell c"></div>
+            <div class="cell e"></div>
+          </div>
+        </div>
+
+        <div style="height: 24px;"></div>
+
+        <div class="tab-bar">
+          <div class="tab active"><span class="tab-icon">▦</span><span>Trips</span></div>
+          <div class="tab"><span class="tab-icon">┃</span><span>Spine</span></div>
+          <div class="tab"><span class="tab-icon">⚙</span><span>Settings</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Color palette -->
+<div class="palette-section">
+  <h2>🎨 컬러 팔레트</h2>
+  <div class="swatch-grid">
+    <div class="swatch">
+      <div class="swatch-color" style="background:#FFFFFF; border-bottom:1px solid #2C2C2E;"></div>
+      <div class="swatch-meta"><div class="swatch-name">bg / 라이트</div><div class="swatch-hex">#FFFFFF</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#000000;"></div>
+      <div class="swatch-meta"><div class="swatch-name">bg / 다크</div><div class="swatch-hex">#000000</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#FAFAFA; border-bottom:1px solid #2C2C2E;"></div>
+      <div class="swatch-meta"><div class="swatch-name">surface / 라이트</div><div class="swatch-hex">#FAFAFA</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#1C1C1E;"></div>
+      <div class="swatch-meta"><div class="swatch-name">surface / 다크</div><div class="swatch-hex">#1C1C1E</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#737373;"></div>
+      <div class="swatch-meta"><div class="swatch-name">text-secondary / 라이트</div><div class="swatch-hex">#737373</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#A8A8A8;"></div>
+      <div class="swatch-meta"><div class="swatch-name">text-secondary / 다크</div><div class="swatch-hex">#A8A8A8</div></div>
+    </div>
+    <div class="swatch" style="grid-column: span 2;">
+      <div class="swatch-color" style="background:#FF3040; height: 100px;"></div>
+      <div class="swatch-meta"><div class="swatch-name">⭐ accent / ♥ favorite (시그니처 컬러)</div><div class="swatch-hex">#FF3040 · 인스타 레드</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#34C759;"></div>
+      <div class="swatch-meta"><div class="swatch-name">success</div><div class="swatch-hex">#34C759</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#FF9500;"></div>
+      <div class="swatch-meta"><div class="swatch-name">warning</div><div class="swatch-hex">#FF9500</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Typography -->
+<div class="palette-section">
+  <h2>🔤 타이포그래피 (SF Pro)</h2>
+  <div class="type-row"><span class="type-size">34pt</span><span class="type-sample" style="font-size: 34px; font-weight: 800;">오사카 4박 5일</span></div>
+  <div class="type-row"><span class="type-size">22pt</span><span class="type-sample" style="font-size: 22px; font-weight: 700;">Trips · 화면 제목</span></div>
+  <div class="type-row"><span class="type-size">17pt</span><span class="type-sample" style="font-size: 17px;">본문 기준 사이즈입니다. 카드 제목·메모에 사용됩니다.</span></div>
+  <div class="type-row"><span class="type-size">14pt</span><span class="type-sample" style="font-size: 14px; color: #A8A8A8;">날짜 · 메타정보 · 보조 텍스트 (회색)</span></div>
+  <div class="type-row"><span class="type-size">12pt</span><span class="type-sample" style="font-size: 12px; color: #737373;">CAPTION · 가장 작은 라벨</span></div>
+</div>
+
+<!-- Spacing -->
+<div class="palette-section">
+  <h2>📏 여백 그리드 (4pt 단위)</h2>
+  <div class="spacing-demo">
+    <div class="space-bar" style="height: 4px;">4</div>
+    <div class="space-bar" style="height: 8px;">8</div>
+    <div class="space-bar" style="height: 12px;">12</div>
+    <div class="space-bar" style="height: 16px;">16</div>
+    <div class="space-bar" style="height: 24px;">24</div>
+    <div class="space-bar" style="height: 32px;">32</div>
+    <div class="space-bar" style="height: 48px;">48</div>
+  </div>
+</div>
+
+<!-- Radius -->
+<div class="palette-section">
+  <h2>📦 모서리 둥글기 (radius)</h2>
+  <div class="radius-demo">
+    <div class="radius-box" style="border-radius: 4px;">4pt</div>
+    <div class="radius-box" style="border-radius: 8px;">8pt</div>
+    <div class="radius-box" style="border-radius: 12px; outline: 2px solid #FFD43B; outline-offset: 4px;">12pt ★</div>
+    <div class="radius-box" style="border-radius: 20px;">20pt</div>
+  </div>
+  <p style="color: #A8A8A8; font-size: 13px; margin-top: 12px;">★ 12pt가 카드·시트 기본값입니다. 4pt는 작은 칩, 8pt는 버튼.</p>
+</div>
+
+</body>
+</html>

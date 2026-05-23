@@ -1,0 +1,67 @@
+/* 사진 라이브러리 권한 사유. 최초 권한 요청 시 표시. */
+"NSPhotoLibraryUsageDescription" = "Trips는 사진을 읽어 여행을 자동으로 정리하고 베스트샷을 골라줍니다. 사진 원본은 기기에 그대로 두고, 라벨·메모·좋아요만 iCloud에 안전하게 동기화돼요.";
+
+/* 앱 이름 */
+"app.name" = "Trips";
+
+/* 탭바 */
+"tab.trips" = "여행";
+"tab.spine" = "타임라인";
+"tab.settings" = "설정";
+
+/* 빈 상태 */
+"empty.trips.title" = "아직 여행이 없어요";
+"empty.trips.body" = "집에서 멀리 떨어진 곳에서 사진을 찍으면 여기에 자동으로 나타나요.";
+
+/* 권한 거부됨 */
+"permission.photos.denied.title" = "사진 접근이 필요해요";
+"permission.photos.denied.body" = "여행 정리를 위해 사진 라이브러리 접근이 필요합니다. 설정에서 권한을 허용해주세요.";
+"permission.photos.openSettings" = "설정 열기";
+
+/* TripList — 메인 화면 */
+"triplist.empty.title" = "아직 여행이 없어요";
+"triplist.empty.body" = "사진 라이브러리를 스캔해서 첫 여행을 찾아보세요. 사진 원본은 기기에 그대로 남아요.";
+"triplist.empty.scanButton" = "사진 스캔";
+"triplist.scanning" = "스캔 중…";
+"triplist.photoCount %lld" = "사진 %lld장";
+"triplist.defaultName %lld" = "여행 %lld";
+"triplist.rescan" = "다시 스캔";
+"triplist.rename" = "이름 변경";
+"triplist.rename.title" = "여행 이름 변경";
+"triplist.rename.placeholder" = "여행 이름";
+"triplist.rename.save" = "저장";
+"triplist.rename.cancel" = "취소";
+
+/* DayFeed — Trip 상세 (날짜별 사진) */
+"dayfeed.photoCount %lld" = "사진 %lld장";
+
+/* Cluster — 중복/유사 사진 묶음 */
+"cluster.title" = "비슷한 사진";
+"cluster.title.single" = "사진";
+"cluster.summary %lld" = "이 묶음에 사진 %lld장";
+"cluster.split" = "이 묶음에서 빼기";
+"cluster.memo" = "묶음 메모";
+"cluster.memo.placeholder" = "이 묶음에 대한 메모…";
+
+/* Photo Detail */
+"photodetail.title" = "사진";
+"photodetail.favorite" = "즐겨찾기";
+"photodetail.memo" = "메모";
+"photodetail.memo.placeholder" = "이 사진에 대한 메모…";
+
+/* 라벨 — Photo Detail / Cluster에서 수동 입력 + DayFeed 필터 */
+"label.section.title" = "라벨";
+"label.add" = "추가";
+"label.remove" = "삭제";
+"label.add.title" = "라벨 추가";
+"label.add.placeholder" = "라벨 이름";
+"label.add.save" = "추가";
+"label.add.cancel" = "취소";
+
+/* Trip 상세 (Spine ↔ Feed 래퍼) */
+"tripdetail.mode.spine" = "척추";
+"tripdetail.mode.feed" = "피드";
+
+/* Visual Spine — 정리 안 된 Day 안내 */
+"spine.unset %lld" = "정리 안 됨 · 사진 %lld장";
+"spine.favoriteCount %lld" = "좋아요 %lld장";

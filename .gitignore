@@ -1,0 +1,76 @@
+# macOS
+.DS_Store
+
+# Vendored reference repos (do not track per CLAUDE.md)
+claude-code-best-practice-main/
+commands-main/
+andrej-karpathy-skills-main/
+
+# XcodeGen-generated project (regenerate with `xcodegen generate`)
+Trips.xcodeproj/
+
+# Xcode
+build/
+DerivedData/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata/
+*.xccheckout
+*.moved-aside
+*.xcuserstate
+*.xcscmblueprint
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Swift Package Manager
+.swiftpm/
+.build/
+Packages/
+Package.resolved
+*.xcodeproj/project.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+
+# CocoaPods (not using, but just in case)
+Pods/
+
+# Carthage
+Carthage/Build/
+
+# fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# Local environment
+.env
+.env.local
+*.local
+
+# Personal/private docs (do not publish)
+yc.md
+yc-startup-school-submission.md
+other-projects.md
+
+# Strategy/ideation history (private)
+CLAUDE.md
+decisions.md
+ideation.md
+evaluation.md
+visuals.md
+
+# Claude Code workflow (entire — local-only settings, rules, commands)
+.claude/

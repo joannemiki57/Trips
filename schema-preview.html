@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Trips — 데이터 스키마 미리보기 (C2)</title>
+<style>
+  :root {
+    --accent: #FF3040;
+    --bg: #0E0E10;
+    --surface: #1C1C1E;
+    --border: #2C2C2E;
+    --text: #FFFFFF;
+    --muted: #A8A8A8;
+    --required: #FF3040;
+    --optional: #FF9500;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "SF Pro Rounded", -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 32px;
+    min-height: 100vh;
+  }
+  .brand {
+    font-size: 32px;
+    font-weight: 900;
+    letter-spacing: -1.2px;
+    margin-bottom: 4px;
+  }
+  .brand .dot { color: var(--accent); font-size: 36px; }
+  h1 { font-size: 26px; font-weight: 800; margin-top: 18px; margin-bottom: 8px; }
+  .subtitle { color: var(--muted); margin-bottom: 32px; font-size: 14px; }
+
+  .legend {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 24px;
+    font-size: 13px;
+    color: var(--muted);
+    flex-wrap: wrap;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .chip-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+  .chip-required .chip-dot { background: var(--required); }
+  .chip-optional .chip-dot { background: var(--optional); }
+  .chip-rel .chip-dot { background: #66D9E8; }
+
+  .diagram {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .entity {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .entity-header {
+    background: linear-gradient(135deg, #FF3040 0%, #C92A2A 100%);
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .entity-header.alt-1 { background: linear-gradient(135deg, #845EF7 0%, #5F3DC4 100%); }
+  .entity-header.alt-2 { background: linear-gradient(135deg, #339AF0 0%, #1864AB 100%); }
+  .entity-header.alt-3 { background: linear-gradient(135deg, #51CF66 0%, #2F9E44 100%); }
+  .entity-header.alt-4 { background: linear-gradient(135deg, #FAB005 0%, #E67700 100%); }
+  .entity-name {
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+  }
+  .entity-tag {
+    font-size: 10px;
+    background: rgba(0,0,0,0.3);
+    padding: 3px 8px;
+    border-radius: 4px;
+    letter-spacing: 1px;
+    font-weight: 600;
+  }
+  .entity-desc {
+    padding: 10px 16px;
+    color: var(--muted);
+    font-size: 12px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,0.02);
+  }
+  .field-list {
+    padding: 8px 0;
+  }
+  .field {
+    display: grid;
+    grid-template-columns: 12px 1fr auto;
+    gap: 10px;
+    align-items: center;
+    padding: 8px 16px;
+    font-size: 13px;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+  }
+  .field:last-child { border-bottom: none; }
+  .field-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  .field-dot.required { background: var(--required); }
+  .field-dot.optional { background: var(--optional); }
+  .field-dot.rel { background: #66D9E8; }
+  .field-name {
+    font-family: "SF Mono", Monaco, monospace;
+    font-size: 12px;
+  }
+  .field-type {
+    color: var(--muted);
+    font-size: 11px;
+    font-family: "SF Mono", monospace;
+  }
+  .field-note {
+    grid-column: 1 / -1;
+    margin-left: 22px;
+    color: var(--muted);
+    font-size: 11px;
+    font-style: italic;
+    padding-top: 2px;
+  }
+
+  .relation-note {
+    background: rgba(102, 217, 232, 0.08);
+    border: 1px solid rgba(102, 217, 232, 0.3);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 24px auto;
+    max-width: 1100px;
+    font-size: 13px;
+    color: #66D9E8;
+  }
+
+  .rules-section {
+    max-width: 1100px;
+    margin: 32px auto 0;
+  }
+  .rules-section h2 {
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+  .rule {
+    background: var(--surface);
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    font-size: 13px;
+  }
+  .rule b { color: var(--accent); }
+
+  code {
+    background: rgba(255,255,255,0.06);
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-family: "SF Mono", monospace;
+    font-size: 11px;
+  }
+</style>
+</head>
+<body>
+
+<div class="brand">Trips<span class="dot">·</span></div>
+<h1>데이터 스키마 미리보기 (C2)</h1>
+<p class="subtitle">selection.md §G 3·4차 라운드 결정을 Swift 코드 구조로 옮긴 것. 사진은 기기에 그대로 두고, 메타데이터만 저장.</p>
+
+<div class="legend">
+  <span class="chip chip-required"><span class="chip-dot"></span>필수 필드</span>
+  <span class="chip chip-optional"><span class="chip-dot"></span>선택 (없어도 됨)</span>
+  <span class="chip chip-rel"><span class="chip-dot" style="background:#66D9E8"></span>관계 (다른 엔티티 연결)</span>
+</div>
+
+<div class="diagram">
+
+  <!-- Trip -->
+  <div class="entity">
+    <div class="entity-header">
+      <span class="entity-name">Trip · 여행 한 건</span>
+      <span class="entity-tag">@Model</span>
+    </div>
+    <div class="entity-desc">여행자가 다녀온 여행 하나. B1 알고리즘이 자동 그루핑.</div>
+    <div class="field-list">
+      <div class="field"><span class="field-dot required"></span><span class="field-name">id</span><span class="field-type">UUID</span></div>
+      <div class="field"><span class="field-dot required"></span><span class="field-name">name</span><span class="field-type">String</span></div>
+      <div class="field"><div class="field-note">예: "오사카 4박 5일" — 자동 생성 후 사용자가 편집 가능 (B5)</div></div>
+      <div class="field"><span class="field-dot required"></span><span class="field-name">startDate</span><span class="field-type">Date</span></div>
+      <div class="field"><span class="field-dot required"></span><span class="field-name">endDate</span><span class="field-type">Date</span></div>
+      <div class="field"><span class="field-dot rel"></span><span class="field-name">coverPhoto</span><span class="field-type">Photo?</span></div>
+      <div class="field"><div class="field-note">대표 사진 = Photo 엔티티 참조 (ID 문자열 X). nil이면 첫 Day의 첫 Scene 대표로 폴백</div></div>
+      <div class="field"><span class="field-dot rel"></span><span class="field-name">days</span><span class="field-type">[Day]</span></div>
+    </div>
+  </div>
+
+  <!-- Day -->
+  <div class="entity">
+    <div class="entity-header alt-1">
+      <span class="entity-name">Day · 여행 중 하루</span>
+      <span class="entity-tag">@Model</span>
+    </div>
+    <div class="entity-desc">한 여행을 일자별로 쪼갠 단위. B2 03:00 룰로 경계 결정. Visual Spine의 "마디"가 이것.</div>
+    <div class="field-list">
+      <div class="field"><span class="field-dot required"></span><span class="field-name">id</span><span class="field-type">UUID</span></div>
+      <div class="field"><span class="field-dot required"></span><span class="field-name">date</span><span class="field-type">Date</span></div>
+      <div class="field"><div class="field-note">로컬 타임존 캘린더 날짜. 새벽 03:00 전 사진은 전날로 귀속</div></div>
+      <div class="field"><span class="field-dot rel"></span><span class="field-name">trip</span><span class="field-type">Trip?</span></div>
+      <div class="field"><span class="field-dot rel"></span><span class="field-name">scenes</span><span class="field-type">[Scene]</span></div>
+      <div class="field"><span class="field-dot rel"></span><span class="field-name">photos</span><span class="field-type">[Photo]</span></div>
+    </div>
+  </div>
+
+  <!-- Scene -->
+  <div class="entity">
+    <div class="entity-header alt-2">
+      <span class="entity-name">Scene · 한 장면 (사진 묶음)</span>
+      <span class="entity-tag">@Model</span>
+    </div>
+    <div class="entity-desc">B3 유사도 알고리즘으로 묶인 "같은 장면" 사진들. mvp.md §6.2의 "한 슬롯".</div>
+    <div class="field-list">
+      <div class="field"><span class="field-dot required"></span><span class="field-name">id</span><span class="field-type">UUID</span></div>
+      <div class="field"><span class="field-dot rel"></span><span class="field-name">representativePhoto</span><span class="field-type">Photo?</span></div>
+      <div class="field"><div class="field-note">대표 사진 = Photo 엔티티 참조. ♥ 누르면 즉시 교체. dangling 참조 위험 없음</div></div>
+      <div class="field"><span class="field-dot optional"></span><span class="field-name">memo</span><span class="field-type">String?</span></div>
+      <div class="field"><div class="field-note">Scene 단위 메모 (텍스트만, v1)</div></div>
+      <div class="field"><span class="field-dot rel"></span><span class="field-name">day</span><span class="field-type">Day?</span></div>
+      <div class="field"><span class="field-dot rel"></span><span class="field-name">photos</span><span class="field-type">[Photo]</span></div>
+      <div class="field"><span class="field-dot rel"></span><span class="field-name">labels</span><span class="field-type">[Label]</span></div>
+    </div>
+  </div>
+
+  <!-- Photo -->
+  <div class="entity">
+    <div class="entity-header alt-3">
+      <span class="entity-name">Photo · 사진 1장</span>
+      <span class="entity-tag">@Model</span>
+    </div>
+    <div class="entity-desc">실제 사진 원본은 기기 카메라롤. 우리는 ID(= 참조표)만 저장. (#8 데이터 분리 원칙)</div>
+    <div class="field-list">
+      <div class="field"><span class="field-dot required"></span><span class="field-name">id</span><span class="field-type">UUID</span></div>
+      <div class="field"><span class="field-dot required"></span><span class="field-name">assetLocalId</span><span class="field-type">String</span></div>
+      <div class="field"><div class="field-note">PHAsset.localIdentifier. 카메라롤에서 원본 찾는 키 (명명 통일)</div></div>
+      <div class="field"><span class="field-dot required"></span><span class="field-name">capturedAt</span><span class="field-type">Date</span></div>
+      <div class="field"><div class="field-note">EXIF 촬영 시각 (EXIF tz 우선, fallback GPS→tz→사용자 tz). Scene 내 정렬용</div></div>
+      <div class="field"><span class="field-dot required"></span><span class="field-name">isFavorite</span><span class="field-type">Bool</span></div>
+      <div class="field"><div class="field-note">♥ 상태. 누르면 Scene.representativePhoto로 자동 승격</div></div>
+      <div class="field"><span class="field-dot optional"></span><span class="field-name">memo</span><span class="field-type">String?</span></div>
+      <div class="field"><div class="field-note">사진별 메모 — v1 포함 (Photo Detail 화면 추가 필요)</div></div>
+      <div class="field"><span class="field-dot optional"></span><span class="field-name">sharpness / score</span><span class="field-type">Double?</span></div>
+      <div class="field"><span class="field-dot optional"></span><span class="field-name">scoreVersion</span><span class="field-type">Int?</span></div>
+      <div class="field"><div class="field-note">B4 베스트샷 점수 + 산식 버전. 버전 다르면 재계산</div></div>
+      <div class="field"><span class="field-dot required"></span><span class="field-name">isMissing</span><span class="field-type">Bool</span></div>
+      <div class="field"><span class="field-dot optional"></span><span class="field-name">lastVerifiedAt</span><span class="field-type">Date?</span></div>
+      <div class="field"><div class="field-note">사진이 카메라롤에서 사라졌는지 캐시 + 백그라운드 재검증 (C3, 매번 PhotoKit 조회 비용 회피)</div></div>
+      <div class="field"><span class="field-dot rel"></span><span class="field-name">day</span><span class="field-type">Day?</span></div>
+      <div class="field"><div class="field-note">init(day:)으로 강제 — 모델 정의는 옵셔널이나 절대 nil 아님</div></div>
+      <div class="field"><span class="field-dot rel"></span><span class="field-name">scene</span><span class="field-type">Scene?</span></div>
+      <div class="field"><div class="field-note">Scene 없을 수 있음 (단일 사진 토글 OFF 기본값)</div></div>
+      <div class="field"><span class="field-dot rel"></span><span class="field-name">labels</span><span class="field-type">[Label]</span></div>
+      <div class="field"><div class="field-note">allLabels = self.labels ∪ scene?.labels (쿼리 시 union, 저장 전파 X)</div></div>
+    </div>
+  </div>
+
+  <!-- Label -->
+  <div class="entity">
+    <div class="entity-header alt-4">
+      <span class="entity-name">Label · 태그</span>
+      <span class="entity-tag">@Model</span>
+    </div>
+    <div class="entity-desc">고정 목록(여행/카페/사람 등) + 자유 입력 모두. Scene·Photo와 다대다(N:N) 연결.</div>
+    <div class="field-list">
+      <div class="field"><span class="field-dot required"></span><span class="field-name">id</span><span class="field-type">UUID</span></div>
+      <div class="field"><span class="field-dot required"></span><span class="field-name">name</span><span class="field-type">String</span></div>
+      <div class="field"><span class="field-dot required"></span><span class="field-name">source</span><span class="field-type">LabelSource</span></div>
+      <div class="field"><div class="field-note">enum: .builtIn / .userDefined (v1.5+ .recommended, .shared 확장)</div></div>
+      <div class="field"><span class="field-dot rel"></span><span class="field-name">scenes</span><span class="field-type">[Scene]</span></div>
+      <div class="field"><span class="field-dot rel"></span><span class="field-name">photos</span><span class="field-type">[Photo]</span></div>
+    </div>
+  </div>
+
+  <!-- UserSettings (5차 라운드 신규) -->
+  <div class="entity">
+    <div class="entity-header" style="background: linear-gradient(135deg, #868E96 0%, #495057 100%);">
+      <span class="entity-name">UserSettings · 사용자 설정</span>
+      <span class="entity-tag">@Model · singleton</span>
+    </div>
+    <div class="entity-desc">앱 전역 1개. homeAnchor를 Trip에서 끄집어내 여기로 (5차 라운드 결정).</div>
+    <div class="field-list">
+      <div class="field"><span class="field-dot required"></span><span class="field-name">id</span><span class="field-type">UUID</span></div>
+      <div class="field"><span class="field-dot optional"></span><span class="field-name">homeAnchorLat / Lon</span><span class="field-type">Double?</span></div>
+      <div class="field"><div class="field-note">"집" 좌표 — B1 거리 판정용. nil이면 야간 사진으로 자동 추정. 사용자 1명에 1개</div></div>
+      <div class="field"><span class="field-dot required"></span><span class="field-name">showSinglePhotoAsScene</span><span class="field-type">Bool</span></div>
+      <div class="field"><div class="field-note">C2 Q2 토글. 기본 false (단일 사진은 Day 직속)</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="relation-note">
+  <b>관계 한눈에:</b> Trip 1 → 여러 Day → 여러 Scene → 여러 Photo · Label은 Scene/Photo 어디든 N:N · ♥는 Photo · UserSettings는 단일 (전역 "집" 좌표)
+</div>
+
+<div class="rules-section">
+  <h2>핵심 규칙 요약</h2>
+  <div class="rule"><b>① 사진은 기기에 그대로</b> — 원본 바이트는 저장 안 함. <code>assetLocalId</code>만 저장 (mvp #8). 사진 100GB여도 우리 DB는 수 MB.</div>
+  <div class="rule"><b>② CloudKit 동기화 = 하이브리드</b> (5차 라운드) — 사용자 수동 수정(Scene 합치기/나누기·메모·label·♥·Trip 정의)은 동기. 자동 묶음(B3 알고리즘 결과)은 기기별 재계산. 충돌 표면 최소.</div>
+  <div class="rule"><b>③ Day는 필수, Scene은 선택</b> — Photo 생성 시 <code>init(day:)</code>로 강제. 단일 사진 토글 OFF가 기본 → Photo가 Day에 직접 소속.</div>
+  <div class="rule"><b>④ ♥ 누르면 자동 승격</b> — <code>Scene.representativePhoto</code>가 즉시 교체. Visual Spine 마디 두께도 ♥ 개수 따라.</div>
+  <div class="rule"><b>⑤ 사진 사라지면 (C3)</b> — Photo 레코드는 남기되 <code>isMissing=true</code> + <code>lastVerifiedAt</code> 캐시. memo/label/♥ 보존. 매번 PhotoKit 조회 비용 회피. 다른 사진으로 이관은 v1.1.</div>
+  <div class="rule"><b>⑥ 동기화 충돌</b> — v1은 last-write-wins (C6).</div>
+  <div class="rule"><b>⑦ Label 전파</b> — Scene에 붙은 라벨이 자동으로 Photo에 저장되진 않음. 쿼리 시 union (<code>photo.allLabels = labels ∪ scene?.labels</code>).</div>
+  <div class="rule"><b>⑧ 점수 캐시</b> — <code>scoreVersion</code>이 현재 알고리즘 버전과 다르면 무시·재계산. 산식 바뀌어도 점진 마이그레이션.</div>
+  <div class="rule"><b>⑨ 타임존</b> — Day 경계는 촬영 시점 EXIF tz 기준. EXIF tz 없으면 GPS→tz, 그것도 없으면 사용자 현재 tz로 폴백.</div>
+  <div class="rule"><b>⑩ 03:00 룰 재계산</b> — Photo 추가/삭제/이동 시 그 사진의 <code>capturedAt</code>이 02:00~04:00 구간일 때만 인접 Day 두 개 재평가. 전체 재계산 X.</div>
+</div>
+
+<div class="rules-section">
+  <h2>스코프 영향 (5차 라운드)</h2>
+  <div class="rule"><b>Photo Detail 화면 추가 필요</b> — Photo.memo가 v1에 포함되므로 mvp.md §6 화면 목록에 "사진 상세" 추가. W3·W4에 작업량 증가. Cluster 화면에서 Photo 탭 시 진입 예정.</div>
+</div>
+
+</body>
+</html>
