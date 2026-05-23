@@ -7,6 +7,7 @@ struct TripDetailView: View {
     var loader: ThumbnailLoader
 
     @State private var mode: ViewMode = .spine
+    @State private var pendingScrollDayId: UUID?
 
     enum ViewMode: String, CaseIterable, Identifiable {
         case spine, feed
@@ -22,14 +23,21 @@ struct TripDetailView: View {
 
             switch mode {
             case .spine:
-                VisualSpineView(trip: trip, loader: loader)
+                VisualSpineView(trip: trip, loader: loader, onJumpToDay: jumpToFeed)
             case .feed:
-                DayFeedView(trip: trip, loader: loader)
+                DayFeedView(trip: trip, loader: loader, scrollToDayId: $pendingScrollDayId)
             }
         }
         .background(TripsColor.bg)
         .navigationTitle(trip.name)
         .navigationBarTitleDisplayMode(.inline)
+    }
+
+    private func jumpToFeed(_ day: Day) {
+        pendingScrollDayId = day.id
+        withAnimation(TripsMotion.transition) {
+            mode = .feed
+        }
     }
 
     private var modeSwitcher: some View {
