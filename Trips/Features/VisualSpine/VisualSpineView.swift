@@ -6,6 +6,7 @@ import SwiftUI
 struct VisualSpineView: View {
     let trip: Trip
     var loader: ThumbnailLoader
+    var onJumpToDay: (Day) -> Void
 
     private var sortedDays: [Day] {
         trip.days.sorted { $0.date < $1.date }
@@ -19,7 +20,8 @@ struct VisualSpineView: View {
                         day: day,
                         loader: loader,
                         isFirst: index == 0,
-                        isLast: index == sortedDays.count - 1
+                        isLast: index == sortedDays.count - 1,
+                        onJumpToDay: onJumpToDay
                     )
                 }
             }
@@ -35,6 +37,7 @@ struct SpineNodeRow: View {
     var loader: ThumbnailLoader
     var isFirst: Bool
     var isLast: Bool
+    var onJumpToDay: (Day) -> Void
 
     /// nil이 아닌 사진의 favorite만 (Day 내부, capturedAt asc).
     private var favoritePhotos: [Photo] {
@@ -87,9 +90,7 @@ struct SpineNodeRow: View {
 
     private var content: some View {
         VStack(alignment: .leading, spacing: TripsSpacing.s) {
-            Text(formattedDate)
-                .font(TripsFont.title)
-                .foregroundStyle(isUntidy ? TripsColor.textSecondary : TripsColor.textPrimary)
+            dateButton
             if isUntidy {
                 untidyHint
             } else {
@@ -97,6 +98,23 @@ struct SpineNodeRow: View {
             }
         }
         .padding(.top, TripsSpacing.xs)
+    }
+
+    private var dateButton: some View {
+        Button {
+            onJumpToDay(day)
+        } label: {
+            HStack(spacing: TripsSpacing.xs) {
+                Text(formattedDate)
+                    .font(TripsFont.title)
+                    .foregroundStyle(isUntidy ? TripsColor.textSecondary : TripsColor.textPrimary)
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundStyle(TripsColor.textSecondary)
+            }
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(String(localized: "spine.jumpToDay"))
     }
 
     private var untidyHint: some View {
