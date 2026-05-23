@@ -66,3 +66,18 @@
 "spine.unset %lld" = "정리 안 됨 · 사진 %lld장";
 "spine.favoriteCount %lld" = "좋아요 %lld장";
 "spine.jumpToDay" = "피드에서 이 Day 보기";
+
+/* Export */
+"export.openSheet" = "이 여행 내보내기";
+"export.title" = "내보내기";
+"export.empty" = "아직 좋아한 사진이 없어요. 마음에 드는 사진에 ♥를 먼저 눌러주세요.";
+"export.pdf.title" = "PDF로 저장";
+"export.pdf.subtitle" = "Day마다 한 페이지, 좋아한 사진들로.";
+"export.pdf.generating" = "PDF 만드는 중…";
+"export.pdf.ready" = "PDF 준비됨";
+"export.pdf.tapToShare" = "탭해서 공유하거나 파일로 저장.";
+"export.album.title" = "사진 앱에 앨범으로 저장";
+"export.album.subtitle" = "이 여행 이름의 앨범에 좋아한 사진들을 모아둠.";
+"export.album.saving" = "저장 중…";
+"export.album.saved" = "사진 앨범에 저장됨.";
+"export.album.denied" = "사진 추가 권한이 필요해요. 설정에서 허용해주세요.";

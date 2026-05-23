@@ -66,3 +66,18 @@
 "spine.unset %lld" = "Untidy · %lld photos";
 "spine.favoriteCount %lld" = "%lld favorites";
 "spine.jumpToDay" = "Jump to day in feed";
+
+/* Export */
+"export.openSheet" = "Export this trip";
+"export.title" = "Export";
+"export.empty" = "No favorites yet. Tap ♥ on photos you want to keep first.";
+"export.pdf.title" = "Save as PDF";
+"export.pdf.subtitle" = "One page per Day with your favorites.";
+"export.pdf.generating" = "Generating PDF…";
+"export.pdf.ready" = "PDF ready";
+"export.pdf.tapToShare" = "Tap to share or save to Files.";
+"export.album.title" = "Save favorites to Photos";
+"export.album.subtitle" = "Add favorites to an album named after this trip.";
+"export.album.saving" = "Saving…";
+"export.album.saved" = "Saved to Photos album.";
+"export.album.denied" = "Photos add access is needed. Allow it in Settings to save the album.";
